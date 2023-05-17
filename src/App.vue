@@ -31,7 +31,8 @@
       <div class="card-body p-2">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" v-model="todo.completed">
-          <label class="form-check-label">
+          <label class="form-check-label" :class="{ todo: todo.completed }"
+          >
             {{ todo.subject }}
           </label>
         </div>
@@ -49,6 +50,10 @@
       const todo = ref('');
       const todos = ref([]);
       const hasError = ref(false);
+      const todoStyle = {
+        textDecoration: 'line-through',
+        color: 'grey'
+      };
 
       const onSubmit = (e) => { // eslint-disable-line no-unused-vars
         // submit후 페이지 리로딩 막기
@@ -76,6 +81,7 @@
         todo,
         todos,
         hasError,
+        todoStyle,
         onSubmit,
         onToggle,
       };
@@ -84,7 +90,9 @@
 </script>
 
 <style>
-  .name {
-    color : red;
+  .todo {
+    color: grey;
+    text-decoration: line-through;
   }
+
 </style>
