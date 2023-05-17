@@ -1,26 +1,29 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="name">
+      {{ greet }}
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  export default {
+    setup() {
+      const Name= 'Kossie Coder';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+      const greeting = (Name) => { // eslint-disable-line no-unused-vars
+        return 'Hello, ' + Name;
+      };
+
+      const greet = greeting(Name); // eslint-disable-line no-unused-vars
+
+      return {
+        greet,
+      };
+    }
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .name {
+    color : red;
+  }
 </style>
