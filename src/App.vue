@@ -1,9 +1,10 @@
 <template>
-    <div class="name">
+    <div :class="nameClass">
       {{ Name }}
     </div>
+  <input :type="type" :value="Name">
   <button
-      class="btn btn-primary" v-on:click="updateName"
+      class="btn btn-primary" @click="updateName"
   >Click
   </button>
 </template>
@@ -12,28 +13,22 @@
   import { ref } from 'vue'; // eslint-disable-line no-unused-vars
 
   export default {
-    // eslint-disable-line no-unused-vars
     setup() {
-      const Name= ref('Kossie Coder123');
-
-      // const greeting = (Name) => { // eslint-disable-line no-unused-vars
-      //   return 'Hello, ' + Name;
-      // };
-      //
-      // const greet = greeting(Name); // eslint-disable-line no-unused-vars
-
-      const consoleLog = () => { // eslint-disable-line no-unused-vars
-        console.log('hello world');
-      };
+      const Name= ref('Kossie');
+      const type = ref('number'); // eslint-disable-line no-unused-vars
+      const nameClass = ref(''); // eslint-disable-line no-unused-vars
 
       const updateName = () => { // eslint-disable-line no-unused-vars
-        Name.value = 'Kossie Coder';
-        console.log(Name.value);
+        Name.value = 'Coder';
+        type.value = 'text';
+        nameClass.value = 'name';
       };
 
       return {
         Name,
         updateName,
+        type,
+        nameClass,
       };
     }
   }
