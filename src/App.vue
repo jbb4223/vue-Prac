@@ -9,10 +9,12 @@
 </template>
 
 <script>
+  import { ref } from 'vue'; // eslint-disable-line no-unused-vars
+
   export default {
     // eslint-disable-line no-unused-vars
     setup() {
-      let Name= 'Kossie Coder123';
+      const Name= ref('Kossie Coder123');
 
       // const greeting = (Name) => { // eslint-disable-line no-unused-vars
       //   return 'Hello, ' + Name;
@@ -25,8 +27,8 @@
       };
 
       const updateName = () => { // eslint-disable-line no-unused-vars
-        Name = 'Kossie Coder';
-        console.log(Name);
+        Name.value = 'Kossie Coder';
+        console.log(Name.value);
       };
 
       return {
