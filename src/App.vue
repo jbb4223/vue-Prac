@@ -1,11 +1,13 @@
 <template>
-    <div :class="nameClass">
-      {{ Name }}
-    </div>
-  <input :type="type" :value="Name">
+  <input
+      type="text"
+      v-model="Name"
+  >
   <button
-      class="btn btn-primary" @click="updateName"
-  >Click
+      class="btn btn-primary"
+      @click="onSubmit"
+  >
+    Click
   </button>
 </template>
 
@@ -15,20 +17,14 @@
   export default {
     setup() {
       const Name= ref('Kossie');
-      const type = ref('number'); // eslint-disable-line no-unused-vars
-      const nameClass = ref(''); // eslint-disable-line no-unused-vars
 
-      const updateName = () => { // eslint-disable-line no-unused-vars
-        Name.value = 'Coder';
-        type.value = 'text';
-        nameClass.value = 'name';
+      const onSubmit = () => { // eslint-disable-line no-unused-vars
+        console.log(Name.value);
       };
 
       return {
         Name,
-        updateName,
-        type,
-        nameClass,
+        onSubmit,
       };
     }
   }
