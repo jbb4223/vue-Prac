@@ -1,22 +1,37 @@
 <template>
     <div class="name">
-      {{ greet }}
+      {{ Name }}
     </div>
+  <button
+      class="btn btn-primary" v-on:click="updateName"
+  >Click
+  </button>
 </template>
 
 <script>
   export default {
+    // eslint-disable-line no-unused-vars
     setup() {
-      const Name= 'Kossie Coder';
+      let Name= 'Kossie Coder123';
 
-      const greeting = (Name) => { // eslint-disable-line no-unused-vars
-        return 'Hello, ' + Name;
+      // const greeting = (Name) => { // eslint-disable-line no-unused-vars
+      //   return 'Hello, ' + Name;
+      // };
+      //
+      // const greet = greeting(Name); // eslint-disable-line no-unused-vars
+
+      const consoleLog = () => { // eslint-disable-line no-unused-vars
+        console.log('hello world');
       };
 
-      const greet = greeting(Name); // eslint-disable-line no-unused-vars
+      const updateName = () => { // eslint-disable-line no-unused-vars
+        Name = 'Kossie Coder';
+        console.log(Name);
+      };
 
       return {
-        greet,
+        Name,
+        updateName,
       };
     }
   }
