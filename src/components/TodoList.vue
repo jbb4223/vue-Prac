@@ -28,13 +28,17 @@
         required: true,
       }
     },
-    setup (props, context) {
+    emits: [
+        'toggle-todo',
+        'delete-todo'
+    ],
+    setup (props, { emit }) {
         const toggleTodo = (index) => { // eslint-disable-line no-unused-vars
-          context.emit('toggle-todo', index);
+          emit('toggle-todo', index);
         };
 
         const deleteTodo = (index) => {
-          context.emit('delete-todo', index);
+          emit('delete-todo', index);
         };
 
         return  {

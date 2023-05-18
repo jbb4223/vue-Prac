@@ -28,7 +28,7 @@
   import {ref} from "vue";
 
   export default {
-    setup (props, context) {
+    setup (props, { emit }) {
       const todo = ref('');
       const hasError = ref(false);
 
@@ -40,7 +40,7 @@
           hasError.value = true;
         } else {
           // 이벤트명, 오브젝트
-          context.emit('add-todo', {
+          emit('add-todo', {
             id: Date.now(),
             subject: todo.value,
             completed: false,
@@ -55,7 +55,10 @@
         hasError,
         onSubmit,
       };
-    }
+    },
+    emits: [
+      'add-todo'
+    ],
   }
 </script>
 
