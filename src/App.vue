@@ -33,7 +33,18 @@
     setup() {
       const toggle = ref(false);
 
-      const todos = ref([]);
+      const todos = ref([
+        {
+          id: 1,
+          subject: '청소하기',
+          completed: true,
+        },
+        {
+          id: 2,
+          subject: '집가기',
+          completed: false,
+        },
+      ]);
 
       const addTodo = (todo) => {
         todos.value.push(todo);
