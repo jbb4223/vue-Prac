@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <h4>count: {{ count }}</h4>
+    <h4>double count computed: {{ doubleCountComputed }}</h4>
+    <h4>double count method: {{ doubleCountMethod() }}</h4>
+    <button @click="count++">Add One</button>
     <h2>To-Do List</h2>
 
     <todo-simple-form @add-todo="addTodo" />
@@ -13,7 +17,7 @@
 </template>
 
 <script>
-  import { ref } from 'vue'; // eslint-disable-line no-unused-vars
+  import { ref, computed } from 'vue'; // eslint-disable-line no-unused-vars
   import TodoSimpleForm from "./components/TodoSimpleForm"; // eslint-disable-line no-unused-vars
   import TodoList from "./components/TodoList"; // eslint-disable-line no-unused-vars
 
@@ -49,6 +53,18 @@
         todos.value.splice(index, 1);
       };
 
+      const count = ref(1);
+
+      const doubleCountComputed = computed(() => {
+        console.log('computed');
+        return count.value * 2;
+      });
+
+      const doubleCountMethod = () => {
+        console.log('method');
+        return count.value * 2;
+      };
+
       return {
         toggle,
         todos,
@@ -57,6 +73,9 @@
         addTodo,
         onToggle,
         deleteTodo,
+        count,
+        doubleCountComputed,
+        doubleCountMethod,
       };
     }
   }
