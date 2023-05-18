@@ -39,6 +39,17 @@
 
       const error = ref('');
 
+      const getTodos = async () => {
+        try {
+          const res = await axios.get('http://localhost:3000/todos');
+          todos.value = res.data;
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      getTodos();
+
       const addTodo =  async (todo) => {
         // 데이터베이스 todo를 저장
         error.value = '';
@@ -53,14 +64,6 @@
         } catch (error) {
           error.value = 'Something went wrong.'
         }
-        //   .then(res => {
-        //   console.log(res);
-        //   todos.value.push(res.data);
-        //   // eslint-disable-next-line no-unused-vars
-        // }).catch(err => {
-        //   console.log(err);
-        //   error.value = 'Something went wrong.';
-        // });
         console.log('hello');
       };
 
@@ -97,6 +100,7 @@
         toggle,
         todos,
         error,
+        getTodos,
         toggleTodo,
         todoStyle,
         addTodo,
