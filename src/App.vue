@@ -8,7 +8,7 @@
       추가된 Todo가 없습니다.
     </div>
 
-    <TodoList :todos="todos" />
+    <TodoList :todos="todos" @toggle-todo="toggleTodo"/>
   </div>
 </template>
 
@@ -32,6 +32,10 @@
         todos.value.push(todo);
       };
 
+      const toggleTodo = (index) => { // eslint-disable-line no-unused-vars
+        todos.value[index].completed = !todos.value[index].completed;
+      };
+
       const todoStyle = {
         textDecoration: 'line-through',
         color: 'grey'
@@ -50,6 +54,7 @@
       return {
         toggle,
         todos,
+        toggleTodo,
         todoStyle,
         addTodo,
         onToggle,
