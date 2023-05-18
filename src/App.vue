@@ -10,6 +10,7 @@
     >
     <hr />
     <todo-simple-form @add-todo="addTodo" />
+    <div style="color: red">{{ error }}</div>
 
     <div v-if="!filteredTodos.length">
       There is nothing to display
@@ -23,6 +24,7 @@
   import { ref, computed } from 'vue'; // eslint-disable-line no-unused-vars
   import TodoSimpleForm from "./components/TodoSimpleForm"; // eslint-disable-line no-unused-vars
   import TodoList from "./components/TodoList"; // eslint-disable-line no-unused-vars
+  import axios from 'axios'; // eslint-disable-line no-unused-vars
 
   export default {
     components: {
@@ -33,21 +35,25 @@
     setup() {
       const toggle = ref(false);
 
-      const todos = ref([
-        {
-          id: 1,
-          subject: '청소하기',
-          completed: true,
-        },
-        {
-          id: 2,
-          subject: '집가기',
-          completed: false,
-        },
-      ]);
+      const todos = ref([]);
+
+      const error = ref('');
 
       const addTodo = (todo) => {
-        todos.value.push(todo);
+        // 데이터베이스 todo를 저장
+        error.value = '';
+        axios.post('http://localhost:3000/todos', {
+          subject: todo.subject,
+          completed: todo.completed,
+          // eslint-disable-next-line no-unused-vars
+        }).then(res => {
+          console.log(res);
+          todos.value.push(res.data);
+          // eslint-disable-next-line no-unused-vars
+        }).catch(err => {
+          console.log(err);
+          error.value = 'Something went wrong.';
+        });
       };
 
       const toggleTodo = (index) => { // eslint-disable-line no-unused-vars
@@ -82,6 +88,7 @@
       return {
         toggle,
         todos,
+        error,
         toggleTodo,
         todoStyle,
         addTodo,
