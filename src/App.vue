@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <todo-simple-form />
+    <todo-simple-form @add-todo="addTodo" />
     <div v-if="!todos.length">
-      추가된 Todo가 없습니다
+      추가된 Todo가 없습니다.
     </div>
     <div
         v-for="(todo, index) in todos"
@@ -38,30 +38,19 @@
     },
     setup() {
       const toggle = ref(false);
-      const todo = ref('');
+
       const todos = ref([]);
-      const hasError = ref(false);
+
+      const addTodo = (todo) => {
+        todos.value.push(todo);
+      };
+
       const todoStyle = {
         textDecoration: 'line-through',
         color: 'grey'
       };
 
-      const onSubmit = (e) => { // eslint-disable-line no-unused-vars
-        // submit후 페이지 리로딩 막기
-        // e.preventDefault();
 
-        if(todo.value === '') {
-          hasError.value = true;
-        } else {
-          todos.value.push({
-            id: Date.now(),
-            subject: todo.value,
-            completed: false,
-          });
-          hasError.value = false;
-          todo.value = '';
-        }
-      };
 
       const onToggle = () => {
         toggle.value = !toggle.value;
@@ -73,11 +62,9 @@
 
       return {
         toggle,
-        todo,
         todos,
-        hasError,
         todoStyle,
-        onSubmit,
+        addTodo,
         onToggle,
         deleteTodo,
       };
