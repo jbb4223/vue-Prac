@@ -8,7 +8,7 @@
       추가된 Todo가 없습니다.
     </div>
 
-    <TodoList :todos="todos" @toggle-todo="toggleTodo"/>
+    <TodoList :todos="todos" @toggle-todo="toggleTodo" @delete-todo="deleteTodo"/>
   </div>
 </template>
 
@@ -40,8 +40,6 @@
         textDecoration: 'line-through',
         color: 'grey'
       };
-
-
 
       const onToggle = () => {
         toggle.value = !toggle.value;
