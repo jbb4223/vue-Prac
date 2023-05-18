@@ -67,13 +67,19 @@
         console.log('hello');
       };
 
-      const toggleTodo = (index) => { // eslint-disable-line no-unused-vars
-        todos.value[index].completed = !todos.value[index].completed;
-      };
+      const toggleTodo = async (index) => { // eslint-disable-line no-unused-vars
+        error.value = '';
+        const id = todos.value[index].id;
+        try {
+          await axios.patch('http://localhost:3000/todos/' + id, {
+            completed: !todos.value[index].completed
+          });
 
-      const todoStyle = {
-        textDecoration: 'line-through',
-        color: 'grey'
+          todos.value[index].completed = !todos.value[index].completed;
+        } catch (err) {
+          console.log(err);
+          error.value = 'Something went wrong';
+        }
       };
 
       const onToggle = () => {
@@ -111,7 +117,6 @@
         error,
         getTodos,
         toggleTodo,
-        todoStyle,
         addTodo,
         onToggle,
         deleteTodo,
