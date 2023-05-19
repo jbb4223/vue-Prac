@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <router-link class="navbar-brand m-2" to="/">
-      Kossie Coder
+      JinBoung
     </router-link>
 
       <ul class="navbar-nav m-2">
