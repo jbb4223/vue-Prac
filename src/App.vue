@@ -71,7 +71,7 @@ import {ref, computed, watch} from 'vue'; // eslint-disable-line no-unused-vars
       const getTodos = async (page = currentPage.value) => {
         currentPage.value = page;
         try {
-          const res = await axios.get(`http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
+          const res = await axios.get(`http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
           numberOfTodos.value = res.headers['x-total-count'];
           todos.value = res.data;
         } catch (err) {
@@ -86,12 +86,12 @@ import {ref, computed, watch} from 'vue'; // eslint-disable-line no-unused-vars
         error.value = '';
         console.log('start');
         try {
-          const res = await axios.post('http://localhost:3000/todos', {
+          await axios.post('http://localhost:3000/todos', {
             subject: todo.subject,
             completed: todo.completed,
             // eslint-disable-next-line no-unused-vars
           });
-          todos.value.push(res.data);
+          getTodos(1);
         } catch (error) {
           error.value = 'Something went wrong.'
         }
@@ -123,7 +123,7 @@ import {ref, computed, watch} from 'vue'; // eslint-disable-line no-unused-vars
         try {
           await axios.delete('http://localhost:3000/todos/'+ id);
 
-          todos.value.splice(index, 1);
+          getTodos(1);
         } catch (err) {
           console.log(err);
           error.value = 'Something went wrong';
