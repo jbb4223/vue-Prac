@@ -20,23 +20,10 @@
 
     <hr/>
 
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item" v-if="currentPage !== 1">
-          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage - 1)">Previous</a>
-        </li>
-        <li class="page-item"
-            :class="currentPage === page ? 'active' : ''"
-            v-for="page in numberOfPages"
-            :key="page"
-        >
-          <a style="cursor: pointer" class="page-link" @click="getTodos(page)">{{page}}</a>
-        </li>
-        <li class="page-item" v-if="currentPage !== numberOfPages">
-          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage + 1)">Next</a>
-        </li>
-      </ul>
-    </nav>
+    <PageNavigation
+        :numberOfPages="numberOfPages"
+        :currentPage="currentPage"
+        @current-page="getTodos"/>
   </div>
 </template>
 
@@ -44,10 +31,12 @@
   import { ref, computed } from 'vue'; // eslint-disable-line no-unused-vars
   import TodoSimpleForm from "./components/TodoSimpleForm"; // eslint-disable-line no-unused-vars
   import TodoList from "./components/TodoList"; // eslint-disable-line no-unused-vars
-  import axios from 'axios'; // eslint-disable-line no-unused-vars
+  import axios from 'axios';
+  import PageNavigation from "@/components/pageNavigation"; // eslint-disable-line no-unused-vars
 
   export default {
     components: {
+      PageNavigation,
       // eslint-disable-next-line vue/no-unused-components
       TodoSimpleForm,
       TodoList,
