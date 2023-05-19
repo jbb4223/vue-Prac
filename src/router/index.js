@@ -19,7 +19,7 @@ const router = createRouter({
       },
       {
          path: '/todos/:id',
-         name: 'Create',
+         name: 'Todo',
          component: Todo
       },
    ]
