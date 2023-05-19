@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import { ref, computed } from 'vue'; // eslint-disable-line no-unused-vars
+  import { ref, computed, watchEffect } from 'vue'; // eslint-disable-line no-unused-vars
   import TodoSimpleForm from "./components/TodoSimpleForm"; // eslint-disable-line no-unused-vars
   import TodoList from "./components/TodoList"; // eslint-disable-line no-unused-vars
   import axios from 'axios'; // eslint-disable-line no-unused-vars
@@ -60,13 +60,30 @@
       const error = ref('');
 
       const numberOfTodos = ref(0);
-      const limit = 5;
+      let limit = 5;
       const currentPage = ref(1);
+
+      // 안에 currentPage 값이 바뀔때마다 해당 watchEffect 함수 실행
+      watchEffect(() => {
+        console.log(limit);
+      });
+
+      // limit는 reactive한 변수가 아니기떄문에 값이 바껴도 watchEffect 영향 X
+      limit = 3;
 
       // todos개수에 따라 페이지 개수 계산
       const numberOfPages = computed(() => {
         return Math.ceil(numberOfTodos.value / limit);
       });
+
+      // const a = reactive({
+      //   b: 1
+      // });
+      //
+      // watchEffect(() => {
+      //   console.log(a.b);
+      // });
+      // a.b=4;
 
       const getTodos = async (page = currentPage.value) => {
         currentPage.value = page;
