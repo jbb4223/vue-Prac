@@ -35,6 +35,7 @@
     <button
         type="submit"
         class="btn btn-primary m-1"
+        :disabled="!todoUpdated"
     >
       Save
     </button>
@@ -48,15 +49,17 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
+import _ from 'lodash';
 
 export default {
   setup () {
     const route = useRoute();
     const router = useRouter();
     const todo = ref(null);
+    const originalTodo = ref(null);
     const loading = ref(true);
     const todoId = route.params.id;
 
@@ -64,9 +67,14 @@ export default {
     const getTodo = async () => {
       const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
 
-      todo.value = res.data;
+      todo.value = { ...res.data };
+      originalTodo.value = { ...res.data };
       loading.value = false;
     };
+
+    const todoUpdated = computed(() => {
+      return !_.isEqual(todo.value, originalTodo.value);
+    });
 
     const toggleTodoStatus = () => {
       todo.value.completed = !todo.value.completed;
@@ -79,16 +87,23 @@ export default {
     };
 
     const onSave = async () => {
-      const res = await axios.put(`http://localhost:3000/todos/${todoId}`,{
-        subject: todo.value.subject,
-        completed: todo.value.completed
-      });
-
-      if(res.status === 200) {
-        router.push({
-          name: 'Todos'
+      if(todoUpdated.value) {
+        const res = await axios.put(`http://localhost:3000/todos/${todoId}`, {
+          subject: todo.value.subject,
+          completed: todo.value.completed
         });
+
+        originalTodo.value = {...res.data};
+
+        if(res.status === 200) {
+          router.push({
+            name: 'Todos'
+          });
+        }
+      } else {
+        alert('변경후 저장해주세요.');
       }
+
     };
 
     getTodo();
@@ -102,6 +117,7 @@ export default {
       toggleTodoStatus,
       moveToTodoListPage,
       onSave,
+      todoUpdated,
     };
   }
 }
