@@ -2,23 +2,54 @@
   <h1>To-Do Page</h1>
   <div v-if="loading"></div>
   <form v-else>
-    <div class="form-group">
-      <label>Todo subject</label>
-      <input type="text" class="form-control" v-model="todo.subject">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Subject</label>
+          <input
+              type="text"
+              class="form-control"
+              v-model="todo.subject"
+          >
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Status</label>
+          <div>
+            <button type="button"
+                    class="btn"
+                    :class="todo.completed ? 'btn-success' : 'btn-danger'"
+                    @click="toggleTodoStatus"
+            >
+              {{ todo.completed ? 'Completed' : 'Incomplete'}}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <br/>
-    <button class="btn btn-primary">저장</button>
+
+    <button type="submit" class="btn btn-primary m-1">
+      Save
+    </button>
+    <button
+        class="btn btn-outline-dark m-1"
+        @click="moveToTodoListPage"
+    >
+      Cancel
+    </button>
   </form>
 </template>
 
 <script>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default {
   setup () {
     const route = useRoute();
+    const router = useRouter();
     const todo = ref(null);
     const loading = ref(true);
 
@@ -30,12 +61,26 @@ export default {
       loading.value = false;
     };
 
+    const toggleTodoStatus = () => {
+      todo.value.completed = !todo.value.completed;
+    };
+
+    const moveToTodoListPage = () => {
+      router.push({
+        name: 'Todos'
+      })
+    };
+
     getTodo();
     console.log(route.params.id);
+
+
 
     return {
       todo,
       loading,
+      toggleTodoStatus,
+      moveToTodoListPage,
     };
   }
 }
