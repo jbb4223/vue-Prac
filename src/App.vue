@@ -7,6 +7,7 @@
         type="text"
         v-model="searchText"
         placeholder="search"
+        @keyup.enter="searchTodo"
     >
     <hr />
     <todo-simple-form @add-todo="addTodo" />
@@ -130,8 +131,18 @@ import {ref, computed, watch} from 'vue'; // eslint-disable-line no-unused-vars
         }
       };
 
-      watch(searchText, () => {
+      let timeout = null;
+
+      const searchTodo = () => {
+        clearTimeout(timeout);
         getTodos(1);
+      };
+
+      watch(searchText, () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          getTodos(1);
+        }, 2000);
       });
       // const filteredTodos = computed(() => {
       //   if (searchText.value) {
@@ -154,6 +165,7 @@ import {ref, computed, watch} from 'vue'; // eslint-disable-line no-unused-vars
         addTodo,
         onToggle,
         deleteTodo,
+        searchTodo,
         searchText,
         // filteredTodos,
       };
