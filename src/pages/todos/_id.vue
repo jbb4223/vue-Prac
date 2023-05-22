@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import {computed, ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue';
+import { computed, ref, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
@@ -65,33 +65,6 @@ export default {
     Toast
   },
   setup () {
-    // DOM에 Mount가 되기전에 실행
-    onBeforeMount(() => {
-      console.log(document.querySelector('#Kossie'));
-    });
-    // DOM에 Mount가 되었을 때 실행
-    onMounted(() => {
-      console.log(document.querySelector('#Kossie'));
-    });
-    // 상태값이 변경되기 전에 실행
-    onBeforeUpdate(() => {
-      console.log('before update');
-    });
-    // 상태값이 변경되고 난 후 실행
-    onUpdated(() => {
-      console.log('updated');
-    });
-    // DOM에 UnMount가 되기전에 실행
-    onBeforeUnmount(() => {
-      console.log('before unmount');
-    });
-    // DOM에 UnMount가 되었을 때 실행
-    // 메모리 소모 같은것들의 낭비를 제거해줄때 주로 사용
-    onUnmounted(() => {
-      console.log('unmounted');
-    });
-
-
     const route = useRoute();
     const router = useRouter();
     const todo = ref(null);
@@ -100,8 +73,15 @@ export default {
     const showToast = ref(false);
     const toastMsessage = ref('');
     const toastAlertType = ref('');
+    const timeOut = ref(null);
     const todoId = route.params.id;
 
+    // DOM에 Mount가 되었을 때 실행
+    // timeout이 걸려있을때 시간을 기다리는도안 다른페이지로 이동하여 unMounted가 작동할때 clearTimeout처리를 해줌
+    onUnmounted(() => {
+      console.log('unmounted');
+      clearTimeout(timeOut.value);
+    });
 
     const getTodo = async () => {
       try {
@@ -136,7 +116,9 @@ export default {
       toastMsessage.value = message;
       toastAlertType.value = type;
       showToast.value = true;
-      setTimeout( () => {
+      // 메모리 누수관리를 위해 필요
+      timeOut.value = setTimeout( () => {
+        console.log('hello');
         toastMsessage.value = '';
         toastAlertType.value = '';
         showToast.value = false;
