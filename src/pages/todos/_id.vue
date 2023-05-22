@@ -46,6 +46,10 @@
       Cancel
     </button>
   </form>
+  <Toast v-if="showToast"
+         :message="toastMsessage"
+         :type="toastAlertType"
+  />
 </template>
 
 <script>
@@ -53,23 +57,37 @@ import {computed, ref} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
+import Toast from '@/components/Toast.vue';
 
 export default {
+  components : {
+    Toast
+  },
   setup () {
     const route = useRoute();
     const router = useRouter();
     const todo = ref(null);
     const originalTodo = ref(null);
     const loading = ref(true);
+    const showToast = ref(false);
+    const toastMsessage = ref('');
+    const toastAlertType = ref('');
     const todoId = route.params.id;
 
 
     const getTodo = async () => {
-      const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
+      try {
+        const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
 
-      todo.value = { ...res.data };
-      originalTodo.value = { ...res.data };
-      loading.value = false;
+        todo.value = { ...res.data };
+        originalTodo.value = { ...res.data };
+
+        loading.value = false;
+      } catch (error) {
+        console.log(error);
+        triggerToast('Something went wrong','danger');
+      }
+
     };
 
     const todoUpdated = computed(() => {
@@ -86,23 +104,30 @@ export default {
       });
     };
 
+    const triggerToast = (message, type = 'success') => {
+      toastMsessage.value = message;
+      toastAlertType.value = type;
+      showToast.value = true;
+      setTimeout( () => {
+        toastMsessage.value = '';
+        toastAlertType.value = '';
+        showToast.value = false;
+      }, 3000);
+    };
+
     const onSave = async () => {
-      if(todoUpdated.value) {
+      try {
         const res = await axios.put(`http://localhost:3000/todos/${todoId}`, {
           subject: todo.value.subject,
           completed: todo.value.completed
         });
 
         originalTodo.value = {...res.data};
-
-        if(res.status === 200) {
-          router.push({
-            name: 'Todos'
-          });
-        }
-      } else {
-        alert('변경후 저장해주세요.');
+        triggerToast('Successfully Saved!');
+      } catch (error) {
+        triggerToast('Something went wrong', 'danger');
       }
+
 
     };
 
@@ -114,10 +139,13 @@ export default {
     return {
       todo,
       loading,
+      showToast,
+      toastMsessage,
       toggleTodoStatus,
       moveToTodoListPage,
       onSave,
       todoUpdated,
+      toastAlertType,
     };
   }
 }
