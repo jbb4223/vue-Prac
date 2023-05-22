@@ -50,10 +50,11 @@
          :message="toastMsessage"
          :type="toastAlertType"
   />
+  <div id="Kossie">corder</div> 
 </template>
 
 <script>
-import {computed, ref} from 'vue';
+import {computed, ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
@@ -64,6 +65,33 @@ export default {
     Toast
   },
   setup () {
+    // DOM에 Mount가 되기전에 실행
+    onBeforeMount(() => {
+      console.log(document.querySelector('#Kossie'));
+    });
+    // DOM에 Mount가 되었을 때 실행
+    onMounted(() => {
+      console.log(document.querySelector('#Kossie'));
+    });
+    // 상태값이 변경되기 전에 실행
+    onBeforeUpdate(() => {
+      console.log('before update');
+    });
+    // 상태값이 변경되고 난 후 실행
+    onUpdated(() => {
+      console.log('updated');
+    });
+    // DOM에 UnMount가 되기전에 실행
+    onBeforeUnmount(() => {
+      console.log('before unmount');
+    });
+    // DOM에 UnMount가 되었을 때 실행
+    // 메모리 소모 같은것들의 낭비를 제거해줄때 주로 사용
+    onUnmounted(() => {
+      console.log('unmounted');
+    });
+
+
     const route = useRoute();
     const router = useRouter();
     const todo = ref(null);
@@ -132,7 +160,6 @@ export default {
     };
 
     getTodo();
-    console.log(route.params.id);
 
 
 
