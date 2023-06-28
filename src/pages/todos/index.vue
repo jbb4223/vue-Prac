@@ -17,7 +17,6 @@
         @keyup.enter="searchTodo"
     >
     <hr />
-    <todo-simple-form @add-todo="addTodo" />
     <div style="color: red">{{ error }}</div>
 
     <div v-if="!todos.length">
@@ -54,7 +53,6 @@
 
 <script>
 import {ref, computed, watch} from 'vue'; // eslint-disable-line no-unused-vars
-import TodoSimpleForm from "@/components/TodoSimpleForm"; // eslint-disable-line no-unused-vars
 import TodoList from "@/components/TodoList"; // eslint-disable-line no-unused-vars
 import axios from 'axios'; // eslint-disable-line no-unused-vars
 import Toast from '@/components/Toast.vue';
@@ -64,7 +62,6 @@ import { useRouter } from 'vue-router';
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    TodoSimpleForm,
     TodoList,
     Toast,
   },
