@@ -39,6 +39,10 @@
       </ul>
     </nav>
   </div>
+  <Toast v-if="showToast"
+         :message="toastMsessage"
+         :type="toastAlertType"
+  />
 </template>
 
 <script>
@@ -46,12 +50,15 @@ import {ref, computed, watch} from 'vue'; // eslint-disable-line no-unused-vars
 import TodoSimpleForm from "@/components/TodoSimpleForm"; // eslint-disable-line no-unused-vars
 import TodoList from "@/components/TodoList"; // eslint-disable-line no-unused-vars
 import axios from 'axios'; // eslint-disable-line no-unused-vars
+import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
 
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
     TodoSimpleForm,
     TodoList,
+    Toast,
   },
   setup() {
     const toggle = ref(false);
@@ -64,6 +71,31 @@ export default {
     let limit = 5;
     const currentPage = ref(1);
     const searchText = ref('');
+
+    const {
+      toastMsessage,
+      toastAlertType,
+      showToast,
+      triggerToast,
+    } = useToast();
+
+    // const toastMsessage = ref('');
+    // const toastAlertType = ref('');
+    // const showToast = ref(false);
+    // const toastTimeOut = ref(null);
+    // const triggerToast = (message, type = 'success') => {
+    //   toastMsessage.value = message;
+    //   toastAlertType.value = type;
+    //   showToast.value = true;
+    //   // 메모리 누수관리를 위해 필요
+    //   toastTimeOut.value = setTimeout( () => {
+    //     console.log('hello');
+    //     toastMsessage.value = '';
+    //     toastAlertType.value = '';
+    //     showToast.value = false;
+    //   }, 5000);
+    // };
+
     // todos개수에 따라 페이지 개수 계산
     const numberOfPages = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);
@@ -77,6 +109,8 @@ export default {
         todos.value = res.data;
       } catch (err) {
         console.log(err);
+        error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger');
       }
     };
 
@@ -95,6 +129,7 @@ export default {
         getTodos(1);
       } catch (error) {
         error.value = 'Something went wrong.'
+        triggerToast('Something went wrong', 'danger');
       }
       console.log('hello');
     };
@@ -168,6 +203,9 @@ export default {
       deleteTodo,
       searchTodo,
       searchText,
+      showToast,
+      toastMsessage,
+      toastAlertType,
       // filteredTodos,
     };
   }

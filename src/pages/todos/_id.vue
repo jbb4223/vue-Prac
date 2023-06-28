@@ -54,11 +54,12 @@
 </template>
 
 <script>
-import { computed, ref, onUnmounted } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
+import { useToast } from "@/composables/toast";
 
 export default {
   components : {
@@ -70,18 +71,15 @@ export default {
     const todo = ref(null);
     const originalTodo = ref(null);
     const loading = ref(true);
-    const showToast = ref(false);
-    const toastMsessage = ref('');
-    const toastAlertType = ref('');
-    const timeOut = ref(null);
+
     const todoId = route.params.id;
 
-    // DOM에 Mount가 되었을 때 실행
-    // timeout이 걸려있을때 시간을 기다리는도안 다른페이지로 이동하여 unMounted가 작동할때 clearTimeout처리를 해줌
-    onUnmounted(() => {
-      console.log('unmounted');
-      clearTimeout(timeOut.value);
-    });
+    const {
+      toastMsessage,
+      toastAlertType,
+      showToast,
+      triggerToast,
+    } = useToast();
 
     const getTodo = async () => {
       try {
@@ -110,19 +108,6 @@ export default {
       router.push({
         name: 'Todos'
       });
-    };
-
-    const triggerToast = (message, type = 'success') => {
-      toastMsessage.value = message;
-      toastAlertType.value = type;
-      showToast.value = true;
-      // 메모리 누수관리를 위해 필요
-      timeOut.value = setTimeout( () => {
-        console.log('hello');
-        toastMsessage.value = '';
-        toastAlertType.value = '';
-        showToast.value = false;
-      }, 3000);
     };
 
     const onSave = async () => {
