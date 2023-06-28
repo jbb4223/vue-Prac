@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12 mb-2">
         <div class="form-group">
           <label>Body</label>
           <textarea v-model="todo.body" class="form-control" id="" cols="30" rows="10"></textarea>
@@ -42,7 +42,7 @@
         class="btn btn-primary m-1"
         :disabled="!todoUpdated"
     >
-      Save
+      {{editing ? 'Update' : 'Create'}}
     </button>
     <button
         class="btn btn-outline-dark m-1"
@@ -128,13 +128,22 @@ export default {
 
     const onSave = async () => {
       try {
-        const res = await axios.put(`http://localhost:3000/todos/${todoId}`, {
+        let res;
+        const data = {
           subject: todo.value.subject,
-          completed: todo.value.completed
-        });
-
-        originalTodo.value = {...res.data};
-        triggerToast('Successfully Saved!');
+          completed: todo.value.completed,
+          body: todo.value.body,
+        }
+        if (props.editing) {
+          res = await axios.put(`http://localhost:3000/todos/${todoId}`, data);
+          originalTodo.value = {...res.data};
+        } else {
+          res = await axios.post(`http://localhost:3000/todos`, data);
+          todo.value.subject = '';
+          todo.value.body = '';
+        }
+        const message = 'Successfully ' + (props.editing ? 'Updated!' : 'Created!');
+        triggerToast(message);
       } catch (error) {
         triggerToast('Something went wrong', 'danger');
       }
