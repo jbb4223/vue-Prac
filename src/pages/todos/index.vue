@@ -1,7 +1,14 @@
 <template>
   <div>
-    <h2>To-Do List</h2>
-
+    <div class="d-flex justify-content-between mb-3">
+      <h2>To-Do List</h2>
+       <button
+           class="btn btn-primary"
+           @click="moveToCreatePage"
+       >
+        Create Todo
+      </button>
+    </div>
     <input
         class="form-control"
         type="text"
@@ -52,6 +59,7 @@ import TodoList from "@/components/TodoList"; // eslint-disable-line no-unused-v
 import axios from 'axios'; // eslint-disable-line no-unused-vars
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -61,6 +69,8 @@ export default {
     Toast,
   },
   setup() {
+    const router = useRouter();
+
     const toggle = ref(false);
 
     const todos = ref([]);
@@ -78,23 +88,6 @@ export default {
       showToast,
       triggerToast,
     } = useToast();
-
-    // const toastMsessage = ref('');
-    // const toastAlertType = ref('');
-    // const showToast = ref(false);
-    // const toastTimeOut = ref(null);
-    // const triggerToast = (message, type = 'success') => {
-    //   toastMsessage.value = message;
-    //   toastAlertType.value = type;
-    //   showToast.value = true;
-    //   // 메모리 누수관리를 위해 필요
-    //   toastTimeOut.value = setTimeout( () => {
-    //     console.log('hello');
-    //     toastMsessage.value = '';
-    //     toastAlertType.value = '';
-    //     showToast.value = false;
-    //   }, 5000);
-    // };
 
     // todos개수에 따라 페이지 개수 계산
     const numberOfPages = computed(() => {
@@ -174,21 +167,19 @@ export default {
       getTodos(1);
     };
 
+    const moveToCreatePage = () => {
+      router.push({
+            name: 'TodoCreate',
+          }
+      );
+    }
+
     watch(searchText, () => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         getTodos(1);
       }, 2000);
     });
-    // const filteredTodos = computed(() => {
-    //   if (searchText.value) {
-    //     return todos.value.filter(todo => {
-    //       return todo.subject.includes(searchText.value);
-    //     });
-    //   }
-    //
-    //   return todos.value;
-    // });
 
     return {
       toggle,
@@ -206,6 +197,7 @@ export default {
       showToast,
       toastMsessage,
       toastAlertType,
+      moveToCreatePage,
       // filteredTodos,
     };
   }
