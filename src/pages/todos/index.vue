@@ -54,7 +54,7 @@
 <script>
 import {ref, computed, watch} from 'vue'; // eslint-disable-line no-unused-vars
 import TodoList from "@/components/TodoList"; // eslint-disable-line no-unused-vars
-import axios from 'axios'; // eslint-disable-line no-unused-vars
+import axios from '@/axios'; // eslint-disable-line no-unused-vars
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
 import { useRouter } from 'vue-router';
@@ -94,7 +94,7 @@ export default {
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
       try {
-        const res = await axios.get(`http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
+        const res = await axios.get(`todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
         numberOfTodos.value = res.headers['x-total-count'];
         todos.value = res.data;
       } catch (err) {
@@ -111,7 +111,7 @@ export default {
       error.value = '';
       console.log('start');
       try {
-        await axios.post('http://localhost:3000/todos', {
+        await axios.post('todos', {
           subject: todo.subject,
           completed: todo.completed,
           // eslint-disable-next-line no-unused-vars
@@ -129,7 +129,7 @@ export default {
       error.value = '';
       const id = todos.value[index].id;
       try {
-        await axios.patch('http://localhost:3000/todos/' + id, {
+        await axios.patch('todos/' + id, {
           completed: checked
         });
 
@@ -148,7 +148,7 @@ export default {
       error.value = '';
       const id = todos.value[index].id;
       try {
-        await axios.delete('http://localhost:3000/todos/'+ id);
+        await axios.delete('todos/'+ id);
 
         getTodos(1);
       } catch (err) {
