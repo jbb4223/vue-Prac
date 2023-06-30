@@ -1,5 +1,4 @@
 import { createStore } from 'vuex';
-import {onUnmounted} from "vue";
 
 export default createStore({
    state: {
