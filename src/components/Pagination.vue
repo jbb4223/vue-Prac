@@ -1,0 +1,56 @@
+<template>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item" v-if="currentPage !== 1">
+        <a
+            style="cursor: pointer"
+            class="page-link"
+            @click="getTodos(currentPage - 1)"
+        >
+          Previous
+        </a>
+      </li>
+      <li class="page-item"
+          :class="currentPage === page ? 'active' : ''"
+          v-for="page in numberOfPages"
+          :key="page"
+      >
+        <a style="cursor: pointer" class="page-link" @click="onClick(page)">{{page}}</a>
+      </li>
+      <li class="page-item" v-if="currentPage !== numberOfPages">
+        <a style="cursor: pointer" class="page-link" @click="onClick(currentPage + 1)">Next</a>
+      </li>
+    </ul>
+  </nav>
+</template>
+
+<script>
+export default {
+  props: {
+    numberOfPages : {
+      type: Number,
+      required: true,
+    },
+    currentPage : {
+      type: Number,
+      required: true,
+    }
+  },
+  emits: [
+      'click'
+  ],
+  setup (props, { emit }) {
+    const onClick = (page) => {
+      emit('click', page);
+    }
+
+    return {
+      onClick,
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

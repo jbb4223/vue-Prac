@@ -1,20 +1,9 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <router-link class="navbar-brand m-2" :to="{name: 'Home'}">
-      JinBoung
-    </router-link>
-
-      <ul class="navbar-nav m-2">
-        <li class="nav-item active">
-          <router-link class="nav-link" :to="{ name: 'Todos' }">
-            Todos
-          </router-link>
-        </li>
-      </ul>
-  </nav>
+  <Navbar />
   <div class="container">
     <router-view />
   </div>
+
   <Toast
       v-if="showToast"
       :message="toastMsessage"
@@ -25,8 +14,10 @@
 <script>
 import Toast from '@/components/Toast.vue';
 import { useToast } from "@/composables/toast";
+import Navbar from "@/components/Navbar.vue";
   export default {
     components: {
+      Navbar,
       Toast
     },
     setup () {
@@ -44,6 +35,7 @@ import { useToast } from "@/composables/toast";
         toastAlertType,
         showToast,
         triggerToast,
+        Navbar,
       }
     }
   }

@@ -27,23 +27,12 @@
 
     <hr/>
 
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item" v-if="currentPage !== 1">
-          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage - 1)">Previous</a>
-        </li>
-        <li class="page-item"
-            :class="currentPage === page ? 'active' : ''"
-            v-for="page in numberOfPages"
-            :key="page"
-        >
-          <a style="cursor: pointer" class="page-link" @click="getTodos(page)">{{page}}</a>
-        </li>
-        <li class="page-item" v-if="currentPage !== numberOfPages">
-          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage + 1)">Next</a>
-        </li>
-      </ul>
-    </nav>
+    <Pagination
+        v-if="todos.length"
+        :number-of-pages="numberOfPages"
+        :current-page="currentPage"
+        @click="getTodos"
+    />
   </div>
   <Toast v-if="showToast"
          :message="toastMsessage"
@@ -58,9 +47,11 @@ import axios from '@/axios'; // eslint-disable-line no-unused-vars
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
 import { useRouter } from 'vue-router';
+import Pagination from "@/components/Pagination.vue";
 
 export default {
   components: {
+    Pagination,
     // eslint-disable-next-line vue/no-unused-components
     TodoList,
     Toast,
