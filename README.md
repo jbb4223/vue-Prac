@@ -1,4 +1,6 @@
-# vue3-project
+# vue-Prac
+# 인프런 코지코더 Vue3 기초 익히기 공부
+[https://www.inflearn.com/course/vue-기초-익히기]
 
 ## Project setup
 ```
