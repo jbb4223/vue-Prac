@@ -1,5 +1,6 @@
 # vue-Prac
-인프런 코지코더 Vue3 기초 익히기 공부
+인프런 코지코더 Vue3 기초 익히기 공부 <br/>
+Vue.js 3에 새롭게 추가된 Composition API를 사용하여 프로젝트를 진행<br/>
 https://www.inflearn.com/course/vue-기초-익히기
 
 ## Project setup
